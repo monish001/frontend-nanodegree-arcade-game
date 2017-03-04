@@ -212,8 +212,6 @@ Player.prototype.handleInput = function(moveDirection) {
 var allEnemies = [
     new Enemy(),
     new Enemy(),
-    new Enemy(),
-    new Enemy(),
     new Enemy()
 ];
 var player = new Player();
