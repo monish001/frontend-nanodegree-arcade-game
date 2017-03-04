@@ -72,7 +72,11 @@ var Player = function(){
     };
 
     // Setting the Enemy speed (you need to implement)
-    this.position = {
+    this.position = this.getInitialPosition();
+};
+
+Player.prototype.getInitialPosition = function(){
+    return {
         x: (CONSTANTS.CANVAS_WIDTH - CONSTANTS.BLOCK_WIDTH) / 2,
         y: 55 + 85 * 3
     };
@@ -95,6 +99,10 @@ Player.prototype.update = function(dt) {
 // Draw the enemy on the screen, required method for game
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.position.x, this.position.y);
+}
+
+Player.prototype.reset = function() {
+    this.position = this.getInitialPosition();
 }
 
 // handle input to navigate the player
@@ -120,7 +128,7 @@ Player.prototype.handleInput = function(moveDirection) {
             if(prevPositionY > minPositionY){
                 this.position.y = prevPositionY - CONSTANTS.BLOCK_HEIGHT;
             }else{
-                // @todo reset on win
+                player.reset();
             }
             break;
         case 'down':
