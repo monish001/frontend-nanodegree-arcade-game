@@ -10,26 +10,43 @@ var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
+    this.id = this.getNextInstanceId();
+
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    // Setting the Enemy initial location (you need to implement)
-    this.position = this.getInitialPosition();
+    // Setting the Enemy initial location
+    this.resetPosition();
 
-    // Setting the Enemy speed (you need to implement)
+    // Setting the Enemy speed
+    this.resetSpeed();
+};
+
+// Provides initial value of speed of enemy
+Enemy.prototype.resetSpeed = function(){
     this.speed = {
-        x: 200 + Math.random() * 200, // Initial speed randomly selected in range of [200, 400) units
+        // Initial speed randomly selected in range of [200, 400) units
+        x: 200 + Math.random() * 200,
         y: 0
     };
 };
 
-Enemy.prototype.getInitialPosition = function(){
+Enemy.prototype.getNextInstanceId = (function(){
+    var _instanceId = 0;
+    return function(){
+        return ++_instanceId;
+    };
+})();
+
+// Provides initial value of position of enemy
+// Used in constructor as well as later when enemy is off screen.
+Enemy.prototype.resetPosition = function(){
     // step can be 0, 1 or 2 generated at random. Based on this, enemy is placed on one of the three rows.
     var nRows = 3;
     var initialRowChoice = Math.floor(Math.random() * nRows);
-    return {
-        x: -1 * CONSTANTS.BLOCK_HEIGHT, // initial horizontal position one block left of canvas
+    this.position = {
+        x: -1 * CONSTANTS.BLOCK_WIDTH, // initial horizontal position one block left of canvas
         y: 55 + CONSTANTS.BLOCK_HEIGHT * initialRowChoice
     };
 };
@@ -44,9 +61,9 @@ Enemy.prototype.update = function(dt) {
     // Updates the Enemy location
     this.position.x += this.speed.x * dt;
 
-    // if the bug has run past the whole width of canvas, regenerate it from beginning.
+    // If the bug has run past the whole width of canvas, regenerate it from beginning.
     if(this.position.x > CONSTANTS.CANVAS_WIDTH){
-        this.position = this.getInitialPosition();
+        this.resetPosition();
     }
 };
 
@@ -68,12 +85,12 @@ var Player = function(){
         y: 0
     };
 
-    // Setting the Enemy speed (you need to implement)
-    this.position = this.getInitialPosition();
+    // Setting the Enemy speed
+    this.resetPosition();
 };
 
-Player.prototype.getInitialPosition = function(){
-    return {
+Player.prototype.resetPosition = function(){
+    this.position = {
         x: (CONSTANTS.CANVAS_WIDTH - CONSTANTS.BLOCK_WIDTH) / 2,
         y: 55 + 85 * 3
     };
@@ -86,7 +103,7 @@ Player.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    // Updates the Player location (you need to implement)
+    // Updates the Player location
     this.position.x += this.speed.x * dt;
     this.position.y += this.speed.y * dt;
 };
@@ -97,7 +114,7 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.reset = function() {
-    this.position = this.getInitialPosition();
+    this.resetPosition();
 }
 
 // handle input to navigate the player
