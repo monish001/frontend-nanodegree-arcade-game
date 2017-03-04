@@ -73,7 +73,7 @@ var Player = function(){
 
     // Setting the Enemy speed (you need to implement)
     this.position = {
-        x: (CONSTANTS.CANVAS_WIDTH + CONSTANTS.BLOCK_WIDTH) / 2,
+        x: (CONSTANTS.CANVAS_WIDTH - CONSTANTS.BLOCK_WIDTH) / 2,
         y: 55 + 85 * 3
     };
 };
@@ -99,21 +99,38 @@ Player.prototype.render = function() {
 
 // handle input to navigate the player
 Player.prototype.handleInput = function(moveDirection) {
+    var prevPositionX = this.position.x,
+        prevPositionY = this.position.y,
+        minPositionY = 61,
+        maxPositionY = 393,
+        minPositionX = 0,
+        maxPositionX = 404;
     switch(moveDirection){
         case 'left':
-            this.position.x -= CONSTANTS.BLOCK_WIDTH;
+            if(prevPositionX > minPositionX){
+                this.position.x = prevPositionX - CONSTANTS.BLOCK_WIDTH;
+            }
             break;
         case 'right':
-            this.position.x += CONSTANTS.BLOCK_WIDTH;
+            if(prevPositionX < maxPositionX){
+                this.position.x = prevPositionX + CONSTANTS.BLOCK_WIDTH;
+            }
             break;
         case 'up':
-            this.position.y -= CONSTANTS.BLOCK_HEIGHT;
+            if(prevPositionY > minPositionY){
+                this.position.y = prevPositionY - CONSTANTS.BLOCK_HEIGHT;
+            }else{
+                // @todo reset on win
+            }
             break;
         case 'down':
-            this.position.y += CONSTANTS.BLOCK_HEIGHT;
+            if(prevPositionY < maxPositionY){
+                this.position.y = prevPositionY + CONSTANTS.BLOCK_HEIGHT;
+            }
             break;
         default:
-            throw new Error('Invalid value of direction.');
+            // do nothing on other events
+            break;
     }
 }
 
