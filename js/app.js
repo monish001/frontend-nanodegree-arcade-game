@@ -1,16 +1,42 @@
-// Constants
+/**
+ * Constants
+ */
 var CONSTANTS = CONSTANTS || {};
 CONSTANTS.CANVAS_WIDTH = 505;
 CONSTANTS.CANVAS_HEIGHT = 606;
 CONSTANTS.BLOCK_WIDTH = 101;
 CONSTANTS.BLOCK_HEIGHT = 83;
 
-// Enemies our player must avoid
+/**
+ * GameCharacter class
+ */
+var GameCharacter = function(){
+    // Each game character to have a unique id. This will handy for debugging purposes.
+    this.id = this.getNextInstanceId();
+};
+
+// Get the next unique id
+GameCharacter.prototype.getNextInstanceId = (function(){
+    var _instanceId = 0;
+    return function(){
+        return ++_instanceId;
+    };
+})();
+
+// Draw the GameCharacter on the screen, required method for game
+GameCharacter.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.position.x, this.position.y);
+};
+
+/**
+ * Enemies our player must avoid
+ */
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
-    this.id = this.getNextInstanceId();
+    // Inherit common functionality from GameCharacter pseudo-class
+    GameCharacter.call(this);
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -22,6 +48,8 @@ var Enemy = function() {
     // Setting the Enemy speed
     this.resetSpeed();
 };
+Enemy.prototype = Object.create(GameCharacter.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Provides initial value of speed of enemy
 Enemy.prototype.resetSpeed = function(){
@@ -31,13 +59,6 @@ Enemy.prototype.resetSpeed = function(){
         y: 0
     };
 };
-
-Enemy.prototype.getNextInstanceId = (function(){
-    var _instanceId = 0;
-    return function(){
-        return ++_instanceId;
-    };
-})();
 
 // Provides initial value of position of enemy
 // Used in constructor as well as later when enemy is off screen.
@@ -67,28 +88,32 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.position.x, this.position.y);
-};
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/**
+ * Now write your own player class.
+ * This class requires an update(), render() and
+ * a handleInput() method.
+ */
 var Player = function(){
-    // default player avatar
+    // Inherit common functionality from GameCharacter pseudo-class
+    GameCharacter.call(this);
+
+    // Default player avatar
     this.sprite = 'images/char-boy.png'; 
 
-    // Setting the Enemy initial location
+    // Setting the player's initial location
     this.speed = {
         x: 0,
         y: 0
     };
 
-    // Setting the Enemy speed
+    // Setting the player's speed
     this.resetPosition();
 };
 
+Player.prototype = Object.create(GameCharacter.prototype);
+Player.prototype.constructor = Player;
+
+// Reset the player position
 Player.prototype.resetPosition = function(){
     this.position = {
         x: (CONSTANTS.CANVAS_WIDTH - CONSTANTS.BLOCK_WIDTH) / 2,
@@ -107,11 +132,6 @@ Player.prototype.update = function(dt) {
     this.position.x += this.speed.x * dt;
     this.position.y += this.speed.y * dt;
 };
-
-// Draw the enemy on the screen, required method for game
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.position.x, this.position.y);
-}
 
 Player.prototype.reset = function() {
     this.resetPosition();
