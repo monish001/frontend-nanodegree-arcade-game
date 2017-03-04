@@ -41,16 +41,13 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    // Updates the Enemy location (you need to implement)
+    // Updates the Enemy location
     this.position.x += this.speed.x * dt;
-    // this.position.y += this.speed.y * dt;
 
     // if the bug has run past the whole width of canvas, regenerate it from beginning.
     if(this.position.x > CONSTANTS.CANVAS_WIDTH){
         this.position = this.getInitialPosition();
     }
-
-    // @todo Handles collision with the Player (you need to implement)
 };
 
 // Draw the enemy on the screen, required method for game
@@ -65,7 +62,7 @@ var Player = function(){
     // default player avatar
     this.sprite = 'images/char-boy.png'; 
 
-    // Setting the Enemy initial location (you need to implement)
+    // Setting the Enemy initial location
     this.speed = {
         x: 0,
         y: 0
@@ -92,8 +89,6 @@ Player.prototype.update = function(dt) {
     // Updates the Player location (you need to implement)
     this.position.x += this.speed.x * dt;
     this.position.y += this.speed.y * dt;
-
-    // @todo Handles collisions (you need to implement)
 };
 
 // Draw the enemy on the screen, required method for game
