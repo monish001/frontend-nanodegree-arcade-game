@@ -7,6 +7,33 @@ CONSTANTS.CANVAS_HEIGHT = 606;
 CONSTANTS.BLOCK_WIDTH = 101;
 CONSTANTS.BLOCK_HEIGHT = 83;
 
+
+
+/**
+ * Rectangle class
+ */
+var Rectangle = function(x, y, width, height){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+};
+
+// Find whether current rectangle touches or overlaps the given rectangle
+Rectangle.prototype.doesOverlap = function(rectangle2){
+    // if one rec is left of other
+    if(this.x + this.width < rectangle2.x || this.x > rectangle2.x + rectangle2.width){
+        return false;
+    }
+
+    // if one rec is above other
+    if(this.y + this.height < rectangle2.y || this.y > rectangle2.y + rectangle2.height){
+        return false;
+    }
+
+    return true;
+}
+
 /**
  * GameCharacter class
  */
@@ -22,6 +49,11 @@ GameCharacter.prototype.getNextInstanceId = (function(){
         return ++_instanceId;
     };
 })();
+
+// Get bounding rectangle for collision detection purposes
+GameCharacter.prototype.getBoundingRectangle = function(){
+    return new Rectangle(this.position.x, this.position.y, CONSTANTS.BLOCK_WIDTH, CONSTANTS.BLOCK_HEIGHT);
+};
 
 // Draw the GameCharacter on the screen, required method for game
 GameCharacter.prototype.render = function() {
