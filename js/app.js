@@ -52,7 +52,13 @@ GameCharacter.prototype.getNextInstanceId = (function(){
 
 // Get bounding rectangle for collision detection purposes
 GameCharacter.prototype.getBoundingRectangle = function(){
-    return new Rectangle(this.position.x, this.position.y, CONSTANTS.BLOCK_WIDTH, CONSTANTS.BLOCK_HEIGHT);
+    // middle 50% in x direction
+    // bottom 50% in y direction
+    return new Rectangle(
+        this.position.x + CONSTANTS.BLOCK_WIDTH/4, 
+        this.position.y + CONSTANTS.BLOCK_HEIGHT/2, 
+        CONSTANTS.BLOCK_WIDTH/2, 
+        CONSTANTS.BLOCK_HEIGHT/2);
 };
 
 // Draw the GameCharacter on the screen, required method for game
@@ -149,7 +155,7 @@ Player.prototype.constructor = Player;
 Player.prototype.resetPosition = function(){
     this.position = {
         x: (CONSTANTS.CANVAS_WIDTH - CONSTANTS.BLOCK_WIDTH) / 2,
-        y: 55 + 85 * 3
+        y: 55 + CONSTANTS.BLOCK_HEIGHT * 4
     };
 };
 
@@ -174,7 +180,7 @@ Player.prototype.handleInput = function(moveDirection) {
     var prevPositionX = this.position.x,
         prevPositionY = this.position.y,
         minPositionY = 61,
-        maxPositionY = 393,
+        maxPositionY = 387,
         minPositionX = 0,
         maxPositionX = 404;
     switch(moveDirection){
