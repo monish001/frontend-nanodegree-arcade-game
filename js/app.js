@@ -19,7 +19,7 @@ var Enemy = function() {
 
     // Setting the Enemy speed (you need to implement)
     this.speed = {
-        x: 200,
+        x: 200 + Math.random() * 200, // Initial speed randomly selected in range of [200, 400) units
         y: 0
     };
 };
@@ -27,10 +27,10 @@ var Enemy = function() {
 Enemy.prototype.getInitialPosition = function(){
     // step can be 0, 1 or 2 generated at random. Based on this, enemy is placed on one of the three rows.
     var nRows = 3;
-    var step = Math.floor(Math.random() * nRows);
+    var initialRowChoice = Math.floor(Math.random() * nRows);
     return {
         x: -1 * CONSTANTS.BLOCK_HEIGHT, // initial horizontal position one block left of canvas
-        y: 55 + CONSTANTS.BLOCK_HEIGHT * step // 85 seems to the block width
+        y: 55 + CONSTANTS.BLOCK_HEIGHT * initialRowChoice
     };
 };
 
@@ -141,6 +141,10 @@ Player.prototype.handleInput = function(moveDirection) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
     new Enemy()
 ];
 var player = new Player();
