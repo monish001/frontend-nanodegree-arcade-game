@@ -2,7 +2,8 @@
 var CONSTANTS = CONSTANTS || {};
 CONSTANTS.CANVAS_WIDTH = 505;
 CONSTANTS.CANVAS_HEIGHT = 606;
-CONSTANTS.BLOCK_WIDTH = 85;
+CONSTANTS.BLOCK_WIDTH = 101;
+CONSTANTS.BLOCK_HEIGHT = 83;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -28,8 +29,8 @@ Enemy.prototype.getInitialPosition = function(){
     var nRows = 3;
     var step = Math.floor(Math.random() * nRows);
     return {
-        x: -1 * CONSTANTS.BLOCK_WIDTH, // initial horizontal position one block left of canvas
-        y: 55 + CONSTANTS.BLOCK_WIDTH * step // 85 seems to the block width
+        x: -1 * CONSTANTS.BLOCK_HEIGHT, // initial horizontal position one block left of canvas
+        y: 55 + CONSTANTS.BLOCK_HEIGHT * step // 85 seems to the block width
     };
 };
 
@@ -72,8 +73,8 @@ var Player = function(){
 
     // Setting the Enemy speed (you need to implement)
     this.position = {
-        x: CONSTANTS.CANVAS_WIDTH / 2,
-        y: 100
+        x: (CONSTANTS.CANVAS_WIDTH + CONSTANTS.BLOCK_WIDTH) / 2,
+        y: 55 + 85 * 3
     };
 };
 
@@ -98,19 +99,18 @@ Player.prototype.render = function() {
 
 // handle input to navigate the player
 Player.prototype.handleInput = function(moveDirection) {
-    var STEP = 100;
     switch(moveDirection){
         case 'left':
-            this.position.x -= STEP;
+            this.position.x -= CONSTANTS.BLOCK_WIDTH;
             break;
         case 'right':
-            this.position.x += STEP;
+            this.position.x += CONSTANTS.BLOCK_WIDTH;
             break;
         case 'up':
-            this.position.y -= STEP;
+            this.position.y -= CONSTANTS.BLOCK_HEIGHT;
             break;
         case 'down':
-            this.position.y += STEP;
+            this.position.y += CONSTANTS.BLOCK_HEIGHT;
             break;
         default:
             throw new Error('Invalid value of direction.');
